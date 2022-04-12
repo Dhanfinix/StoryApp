@@ -45,11 +45,11 @@ class SignUpActivity : AppCompatActivity() {
         }.start()
         val tittle = ObjectAnimator.ofFloat(binding.titleTextView, View.ALPHA, 1f).setDuration(500)
         val name = ObjectAnimator.ofFloat(binding.nameTextView, View.ALPHA, 1f).setDuration(500)
-        val nameEdit = ObjectAnimator.ofFloat(binding.nameEditText, View.ALPHA, 1f).setDuration(500)
+        val nameEdit = ObjectAnimator.ofFloat(binding.nameEditTextLayout, View.ALPHA, 1f).setDuration(500)
         val email = ObjectAnimator.ofFloat(binding.emailTextView, View.ALPHA, 1f).setDuration(500)
-        val emailEdit = ObjectAnimator.ofFloat(binding.emailEditText, View.ALPHA, 1f).setDuration(500)
+        val emailEdit = ObjectAnimator.ofFloat(binding.emailEditTextLayout, View.ALPHA, 1f).setDuration(500)
         val pass = ObjectAnimator.ofFloat(binding.passwordTextView, View.ALPHA, 1f).setDuration(500)
-        val passEdit = ObjectAnimator.ofFloat(binding.passwordEditText, View.ALPHA, 1f).setDuration(500)
+        val passEdit = ObjectAnimator.ofFloat(binding.passwordEditTextLayout, View.ALPHA, 1f).setDuration(500)
         val signUp = ObjectAnimator.ofFloat(binding.signupButton, View.ALPHA, 1f).setDuration(500)
 
         AnimatorSet().apply {
@@ -80,9 +80,9 @@ class SignUpActivity : AppCompatActivity() {
 
     private fun setupAction() {
         binding.signupButton.setOnClickListener {
-            val name = binding.nameEditText.text.toString()
-            val email = binding.emailEditText.text.toString()
-            val password = binding.passwordEditText.text.toString()
+            val name = binding.nameEditTextLayout.text.toString()
+            val email = binding.emailEditTextLayout.text.toString()
+            val password = binding.passwordEditTextLayout.text.toString()
             when {
                 name.isEmpty() -> {
                     binding.nameEditTextLayout.error = "Masukkan email"
@@ -92,6 +92,9 @@ class SignUpActivity : AppCompatActivity() {
                 }
                 password.isEmpty() -> {
                     binding.passwordEditTextLayout.error = "Masukkan password"
+                }
+                password.length <= 6 -> {
+                    binding.passwordEditTextLayout.error = "Harus lebih dari enam karakter"
                 }
                 else -> {
                     signupViewModel.saveUser(UserModel(name, email, password, false))

@@ -16,4 +16,5 @@
     <string name="logout">Keluar</string>
     <string name="belum_punya_akun_daftar_disini">Belum punya akun?</string>
     <string name="singUp">Daftar</string>
+    <string name="logo_aplikasi">logo aplikasi</string>
 </resources>
