@@ -14,7 +14,6 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
 import androidx.lifecycle.ViewModelProvider
-import com.dhandev.storyapp.R
 import com.dhandev.storyapp.ViewModelFactory
 import com.dhandev.storyapp.databinding.ActivitySignUpBinding
 import com.dhandev.storyapp.model.UserModel
