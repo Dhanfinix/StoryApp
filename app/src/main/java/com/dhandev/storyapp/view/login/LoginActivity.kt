@@ -98,6 +98,19 @@ class LoginActivity : AppCompatActivity() {
 //                }
                 else -> {
                     postLogin(email, password)
+//                    loginViewModel.login()
+//                    AlertDialog.Builder(this).apply {
+//                        setTitle("Yeah!")
+//                        setMessage("Anda berhasil login. Sudah tidak sabar untuk berbagi ya?")
+//                        setPositiveButton("Lanjut") { _, _ ->
+//                            val intent = Intent(context, MainActivity::class.java)
+//                            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+//                            startActivity(intent)
+//                            finish()
+//                        }
+//                        create()
+//                        show()
+//                    }
                 }
             }
         }
@@ -108,6 +121,7 @@ class LoginActivity : AppCompatActivity() {
 
     private fun postLogin(email : String, password : String) {
         showLoading(true)
+        loginViewModel.login()
         val client = ApiConfig.getApiService().login(email, password)
         client.enqueue(object : Callback<login> {
             override fun onResponse(call: Call<login>, response: Response<login>) {
