@@ -3,7 +3,7 @@ package com.dhandev.storyapp.model
 data class login(
     val error : Boolean,
     val message : String,
-    val loginResult : List<LoginResultItem>
+    val loginResult : LoginResultItem
 )
 {
 data class LoginResultItem(

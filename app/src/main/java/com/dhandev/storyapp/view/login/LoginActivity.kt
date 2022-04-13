@@ -7,6 +7,7 @@ import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.WindowInsets
 import android.view.WindowManager
@@ -17,11 +18,16 @@ import androidx.datastore.preferences.preferencesDataStore
 import androidx.lifecycle.ViewModelProvider
 import com.dhandev.storyapp.R
 import com.dhandev.storyapp.ViewModelFactory
+import com.dhandev.storyapp.api.ApiConfig
 import com.dhandev.storyapp.databinding.ActivityLoginBinding
 import com.dhandev.storyapp.model.UserModel
 import com.dhandev.storyapp.model.UserPreference
+import com.dhandev.storyapp.model.login
 import com.dhandev.storyapp.view.main.MainActivity
 import com.dhandev.storyapp.view.signup.SignUpActivity
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
 
@@ -84,15 +90,31 @@ class LoginActivity : AppCompatActivity() {
                 password.isEmpty() -> {
                     binding.passwordEditTextLayout.error = "Masukkan password"
                 }
-                email != user.email -> {
-                    binding.emailEditTextLayout.error = "Email tidak sesuai"
-                }
-                password != user.password -> {
-                    binding.passwordEditTextLayout.error = "Password tidak sesuai"
-                }
+//                email != user.email -> {
+//                    binding.emailEditTextLayout.error = "Email tidak sesuai"
+//                }
+//                password != user.password -> {
+//                    binding.passwordEditTextLayout.error = "Password tidak sesuai"
+//                }
                 else -> {
-                    loginViewModel.login()
-                    AlertDialog.Builder(this).apply {
+                    postLogin(email, password)
+                }
+            }
+        }
+        binding.signupButton.setOnClickListener {
+            startActivity(Intent(this, SignUpActivity::class.java))
+        }
+    }
+
+    private fun postLogin(email : String, password : String) {
+        showLoading(true)
+        val client = ApiConfig.getApiService().login(email, password)
+        client.enqueue(object : Callback<login> {
+            override fun onResponse(call: Call<login>, response: Response<login>) {
+                showLoading(false)
+                val responseBody = response.body()
+                if (response.isSuccessful && responseBody != null){
+                    AlertDialog.Builder(this@LoginActivity).apply {
                         setTitle("Yeah!")
                         setMessage("Anda berhasil login. Sudah tidak sabar untuk berbagi ya?")
                         setPositiveButton("Lanjut") { _, _ ->
@@ -104,12 +126,28 @@ class LoginActivity : AppCompatActivity() {
                         create()
                         show()
                     }
+                } else {
+                    Log.e(TAG, "onFailure: ${response.message()}")
                 }
             }
-        }
-        binding.signupButton.setOnClickListener {
-            startActivity(Intent(this, SignUpActivity::class.java))
+
+            override fun onFailure(call: Call<login>, t: Throwable) {
+                showLoading(false)
+                Log.e(TAG, "onFailure: ${t.message}")
+            }
+
+        })
+    }
+
+    private fun showLoading(isLoading: Boolean) {
+        if (isLoading) {
+            binding.progressBar.visibility = View.VISIBLE
+        } else {
+            binding.progressBar.visibility = View.GONE
         }
     }
 
+    companion object {
+        private const val TAG = "LoginActivity"
+    }
 }
