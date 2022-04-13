@@ -12,7 +12,7 @@ android {
         targetSdk 31
         versionCode 1
         versionName "1.0"
-        buildConfigField("String", "TOKEN", API_TOKEN)
+        buildConfigField("String", "TOKEN", '"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJ1c2VyLVN1VTlLR0duZlA3ZHg5b3EiLCJpYXQiOjE2NDk4NjEzMTV9.2aCMRadWBwvDv8CNIWgnQKQ7EvLpFgtay4Umce2mREs"')
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 

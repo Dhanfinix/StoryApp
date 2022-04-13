@@ -33,23 +33,12 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_toEndOf="@id/img_item_photo"
-            android:textSize="16sp"
+            android:textSize="18sp"
             android:textStyle="bold"
             card_view:layout_constraintEnd_toEndOf="@id/img_item_photo"
             card_view:layout_constraintStart_toStartOf="@+id/img_item_photo"
-            card_view:layout_constraintBottom_toTopOf="@+id/img_item_photo"
+            card_view:layout_constraintTop_toBottomOf="@+id/img_item_photo"
             tools:text="User Name" />
-
-        <TextView
-            android:id="@+id/tv_item_date"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_toEndOf="@id/img_item_photo"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            card_view:layout_constraintEnd_toEndOf="@id/img_item_photo"
-            card_view:layout_constraintBottom_toTopOf="@+id/img_item_photo"
-            tools:text="2022-01-08" />
 
         <TextView
             android:id="@+id/tv_item_desc"
@@ -63,5 +52,16 @@
             card_view:layout_constraintTop_toBottomOf="@+id/img_item_photo"
             card_view:layout_constraintBottom_toBottomOf="parent"
             tools:text="Description" />
+
+        <TextView
+            android:id="@+id/tv_item_date"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/img_item_photo"
+            android:textSize="14sp"
+            android:textStyle="italic"
+            card_view:layout_constraintStart_toStartOf="@id/img_item_photo"
+            card_view:layout_constraintTop_toBottomOf="@+id/tv_item_desc"
+            tools:text="2022-01-08" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>

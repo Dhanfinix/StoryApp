@@ -32,8 +32,7 @@ class storyItemAdapter(private val listStoryItem: ArrayList<getAllStory.ListStor
                 Glide.with(itemView)
                     .load(item.photoUrl)
                     .transition(DrawableTransitionOptions.withCrossFade())
-                    .centerCrop()
-                    .circleCrop()
+                    .centerInside()
                     .into(imgItemPhoto)
                 tvItemUsername.text = item.name
                 tvItemDate.text = item.createdAt

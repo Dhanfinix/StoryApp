@@ -129,7 +129,7 @@ class LoginActivity : AppCompatActivity() {
                 showLoading(false)
                 val responseBody = response.body()
                 if (response.isSuccessful && responseBody != null){
-                    val token =response.body()?.loginResult?.token
+//                    token =response.body()?.loginResult?.token
                     Toast.makeText(this@LoginActivity, token, Toast.LENGTH_SHORT).show()
                     AlertDialog.Builder(this@LoginActivity).apply {
                         setTitle("Yeah!")
@@ -166,5 +166,6 @@ class LoginActivity : AppCompatActivity() {
 
     companion object {
         private const val TAG = "LoginActivity"
+        const val token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJ1c2VyLVN1VTlLR0duZlA3ZHg5b3EiLCJpYXQiOjE2NDk4NjEzMTV9.2aCMRadWBwvDv8CNIWgnQKQ7EvLpFgtay4Umce2mREs"
     }
 }

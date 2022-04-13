@@ -25,7 +25,7 @@ interface ApiService {
     ) : Call<login>
 
     @GET("stories")
-//    @Headers("Authorization: Bearer ${BuildConfig.}")
+    @Headers("Authorization: Bearer ${LoginActivity.token}")
     // belum bisa jalan karena 401 unathorized
     fun getStories() : Call<getAllStory>
 }
