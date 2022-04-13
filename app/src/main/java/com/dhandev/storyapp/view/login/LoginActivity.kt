@@ -11,6 +11,7 @@ import android.util.Log
 import android.view.View
 import android.view.WindowInsets
 import android.view.WindowManager
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
@@ -128,6 +129,8 @@ class LoginActivity : AppCompatActivity() {
                 showLoading(false)
                 val responseBody = response.body()
                 if (response.isSuccessful && responseBody != null){
+                    val token =response.body()?.loginResult?.token
+                    Toast.makeText(this@LoginActivity, token, Toast.LENGTH_SHORT).show()
                     AlertDialog.Builder(this@LoginActivity).apply {
                         setTitle("Yeah!")
                         setMessage("Anda berhasil login. Sudah tidak sabar untuk berbagi ya?")

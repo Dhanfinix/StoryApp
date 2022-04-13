@@ -11,10 +11,13 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.dhandev.storyapp.R
 import com.dhandev.storyapp.ViewModelFactory
 import com.dhandev.storyapp.databinding.ActivityMainBinding
 import com.dhandev.storyapp.model.UserPreference
+import com.dhandev.storyapp.model.getAllStory
+import com.dhandev.storyapp.storyItemAdapter
 import com.dhandev.storyapp.view.login.LoginActivity
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
@@ -22,18 +25,17 @@ private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(na
 class MainActivity : AppCompatActivity() {
     private lateinit var mainViewModel: MainViewModel
     private lateinit var binding: ActivityMainBinding
+    private lateinit var adapter: storyItemAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        setupView()
-        setupViewModel()
-        setupAction()
-    }
+        val listStory = ArrayList<getAllStory.ListStoryItem>()
+        adapter = storyItemAdapter(listStory)
+        adapter.notifyDataSetChanged()
 
-    private fun setupView() {
         @Suppress("DEPRECATION")
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             window.insetsController?.hide(WindowInsets.Type.statusBars())
@@ -44,13 +46,21 @@ class MainActivity : AppCompatActivity() {
             )
         }
         supportActionBar?.hide()
-    }
 
-    private fun setupViewModel() {
+
         mainViewModel = ViewModelProvider(
             this,
             ViewModelFactory(UserPreference.getInstance(dataStore))
         )[MainViewModel::class.java]
+
+        binding.apply {
+            rvGituser.layoutManager = LinearLayoutManager(this@MainActivity)
+            rvGituser.setHasFixedSize(true)
+            rvGituser.adapter = adapter
+            logoutButton.setOnClickListener {
+                mainViewModel.logout()
+            }
+        }
 
         mainViewModel.getUser().observe(this) { user ->
             if (user.isLogin) {
@@ -60,11 +70,13 @@ class MainActivity : AppCompatActivity() {
                 finish()
             }
         }
-    }
 
-    private fun setupAction() {
-        binding.logoutButton.setOnClickListener {
-            mainViewModel.logout()
+        mainViewModel.findStory()
+        mainViewModel.getStory().observe(this) {
+            if (it != null) {
+                adapter.getListStory(it as ArrayList<getAllStory.ListStoryItem>)
+            }
         }
+
     }
 }
