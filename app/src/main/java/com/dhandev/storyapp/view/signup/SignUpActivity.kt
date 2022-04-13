@@ -6,18 +6,26 @@ import android.content.Context
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.WindowInsets
 import android.view.WindowManager
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
 import androidx.lifecycle.ViewModelProvider
 import com.dhandev.storyapp.ViewModelFactory
+import com.dhandev.storyapp.api.ApiConfig
 import com.dhandev.storyapp.databinding.ActivitySignUpBinding
 import com.dhandev.storyapp.model.UserModel
 import com.dhandev.storyapp.model.UserPreference
+import com.dhandev.storyapp.model.login
+import com.dhandev.storyapp.model.register
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
 
@@ -96,8 +104,31 @@ class SignUpActivity : AppCompatActivity() {
                     binding.passwordEditTextLayout.error = "Harus lebih dari enam karakter"
                 }
                 else -> {
-                    signupViewModel.saveUser(UserModel(name, email, password, false))
-                    AlertDialog.Builder(this).apply {
+                    postSignUp(name, email, password)
+
+//                    signupViewModel.saveUser(UserModel(name, email, password, false))
+//                    AlertDialog.Builder(this).apply {
+//                        setTitle("Yeah!")
+//                        setMessage("Akunnya sudah jadi nih. Yuk, login dan bagi pengalamanmu.")
+//                        setPositiveButton("Lanjut") { _, _ ->
+//                            finish()
+//                        }
+//                        create()
+//                        show()
+                    }
+                }
+            }
+        }
+
+    private fun postSignUp(name : String, email : String, password : String) {
+        showLoading(true)
+        val client = ApiConfig.getApiService().register(name, email, password)
+        client.enqueue(object : Callback<register> {
+            override fun onResponse(call: Call<register>, response: Response<register>) {
+                showLoading(false)
+                val responseBody = response.body()
+                if (response.isSuccessful && responseBody != null) {
+                    AlertDialog.Builder(this@SignUpActivity).apply {
                         setTitle("Yeah!")
                         setMessage("Akunnya sudah jadi nih. Yuk, login dan bagi pengalamanmu.")
                         setPositiveButton("Lanjut") { _, _ ->
@@ -106,8 +137,27 @@ class SignUpActivity : AppCompatActivity() {
                         create()
                         show()
                     }
+                } else {
+                    Log.e(TAG, "onFailure: ${response.message()}")
                 }
             }
+
+            override fun onFailure(call: Call<register>, t: Throwable) {
+                showLoading(false)
+                Log.e(TAG, "onFailure: ${t.message}")
+            }
+        })
+    }
+
+    private fun showLoading(isLoading: Boolean) {
+        if (isLoading) {
+            binding.progressBar.visibility = View.VISIBLE
+        } else {
+            binding.progressBar.visibility = View.GONE
         }
+    }
+
+    companion object {
+        private const val TAG = "MainActivity"
     }
 }
