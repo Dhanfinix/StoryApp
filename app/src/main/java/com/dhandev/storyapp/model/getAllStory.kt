@@ -16,3 +16,8 @@ data class getAllStory(
         val lat: Double
     )
 }
+
+data class FileUploadResponse(
+    val error: Boolean,
+    val message: String
+)
