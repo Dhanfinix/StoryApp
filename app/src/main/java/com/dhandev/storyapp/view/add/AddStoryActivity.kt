@@ -4,6 +4,7 @@ import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.BitmapFactory
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
@@ -13,6 +14,7 @@ import androidx.core.content.ContextCompat
 import com.dhandev.storyapp.R
 import com.dhandev.storyapp.databinding.ActivityAddStoryBinding
 import com.dhandev.storyapp.rotateBitmap
+import com.dhandev.storyapp.uriToFile
 import java.io.File
 
 class AddStoryActivity : AppCompatActivity() {
@@ -57,6 +59,13 @@ class AddStoryActivity : AppCompatActivity() {
                 val intent = Intent(this@AddStoryActivity, CameraActivity::class.java)
                 launcherIntentCameraX.launch(intent)
             }
+            btnGaleri.setOnClickListener {
+                val intent = Intent()
+                intent.action = Intent.ACTION_GET_CONTENT
+                intent.type = "image/*"
+                val chooser = Intent.createChooser(intent, "Choose a Picture")
+                launcherIntentGallery.launch(chooser)
+            }
         }
     }
 
@@ -73,6 +82,16 @@ class AddStoryActivity : AppCompatActivity() {
             )
 
             binding.previewImage.setImageBitmap(result)
+        }
+    }
+
+    private val launcherIntentGallery = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        if (result.resultCode == RESULT_OK) {
+            val selectedImg: Uri = result.data?.data as Uri
+            val myFile = uriToFile(selectedImg, this)
+            binding.previewImage.setImageURI(selectedImg)
         }
     }
 
