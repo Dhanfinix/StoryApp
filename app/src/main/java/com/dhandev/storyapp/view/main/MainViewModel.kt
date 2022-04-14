@@ -34,7 +34,6 @@ class MainViewModel(private val pref: UserPreference) : ViewModel() {
 
     }
 
-    //TODO: Hubungkan main view model, adapter
 
     fun getStory() : LiveData<List<getAllStory.ListStoryItem>>{
         return _listStory

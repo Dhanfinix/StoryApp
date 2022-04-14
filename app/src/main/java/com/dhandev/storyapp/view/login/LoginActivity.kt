@@ -130,7 +130,6 @@ class LoginActivity : AppCompatActivity() {
                 val responseBody = response.body()
                 if (response.isSuccessful && responseBody != null){
 //                    token =response.body()?.loginResult?.token
-                    Toast.makeText(this@LoginActivity, token, Toast.LENGTH_SHORT).show()
                     AlertDialog.Builder(this@LoginActivity).apply {
                         setTitle("Yeah!")
                         setMessage("Anda berhasil login. Sudah tidak sabar untuk berbagi ya?")

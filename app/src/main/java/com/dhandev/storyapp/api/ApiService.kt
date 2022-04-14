@@ -27,5 +27,6 @@ interface ApiService {
     @GET("stories")
     @Headers("Authorization: Bearer ${LoginActivity.token}")
     // belum bisa jalan karena 401 unathorized
+    //TODO:AUTHORIZATION TOKEN MASUKKAN KE BUILD GRADLE/PROPERTIES!
     fun getStories() : Call<getAllStory>
 }

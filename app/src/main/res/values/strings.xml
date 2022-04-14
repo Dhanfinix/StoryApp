@@ -17,4 +17,10 @@
     <string name="belum_punya_akun_daftar_disini">Belum punya akun?</string>
     <string name="singUp">Daftar</string>
     <string name="logo_aplikasi">logo aplikasi</string>
+    <string name="add_new_story">Add New Story</string>
+    <string name="deskripsi">Deskripsi</string>
+    <string name="upload">Upload</string>
+    <string name="galeri">Galeri</string>
+    <string name="kamera">Kamera</string>
+    <string name="story_picture">Story Picture</string>
 </resources>

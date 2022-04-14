@@ -20,6 +20,7 @@ import com.dhandev.storyapp.databinding.ActivityMainBinding
 import com.dhandev.storyapp.model.UserPreference
 import com.dhandev.storyapp.model.getAllStory
 import com.dhandev.storyapp.storyItemAdapter
+import com.dhandev.storyapp.view.add.AddStoryActivity
 import com.dhandev.storyapp.view.login.LoginActivity
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
@@ -38,17 +39,6 @@ class MainActivity : AppCompatActivity() {
         adapter = storyItemAdapter(listStory)
         adapter.notifyDataSetChanged()
 
-        @Suppress("DEPRECATION")
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            window.insetsController?.hide(WindowInsets.Type.statusBars())
-        } else {
-            window.setFlags(
-                WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN
-            )
-        }
-
-
         mainViewModel = ViewModelProvider(
             this,
             ViewModelFactory(UserPreference.getInstance(dataStore))
@@ -58,8 +48,8 @@ class MainActivity : AppCompatActivity() {
             rvGituser.layoutManager = LinearLayoutManager(this@MainActivity)
             rvGituser.setHasFixedSize(true)
             rvGituser.adapter = adapter
-            logoutButton.setOnClickListener {
-                mainViewModel.logout()
+            fab.setOnClickListener {
+                startActivity(Intent(this@MainActivity, AddStoryActivity::class.java))
             }
         }
 
