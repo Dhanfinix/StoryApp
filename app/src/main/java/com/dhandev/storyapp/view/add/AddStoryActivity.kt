@@ -80,7 +80,7 @@ class AddStoryActivity : AppCompatActivity() {
                 launcherIntentGallery.launch(chooser)
             }
             btnUpload.setOnClickListener {
-                if (getFile != null) {
+                if (getFile != null && binding.etDesc.text.toString() != "") {
                     val file = getFile as File
                     val edDescription = etDesc.text.toString()
                     val description = edDescription.toRequestBody("text/plain".toMediaType())
@@ -115,7 +115,7 @@ class AddStoryActivity : AppCompatActivity() {
                     })
 
                 } else {
-                    Toast.makeText(this@AddStoryActivity, "Silakan masukkan berkas gambar terlebih dahulu.", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@AddStoryActivity, "Gambar dan deskripsi tidak boleh kosong.", Toast.LENGTH_SHORT).show()
                 }
             }
         }

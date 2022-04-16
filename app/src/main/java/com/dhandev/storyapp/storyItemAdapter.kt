@@ -35,7 +35,7 @@ class storyItemAdapter(private val listStoryItem: ArrayList<getAllStory.ListStor
                     .centerInside()
                     .into(imgItemPhoto)
                 tvItemUsername.text = item.name
-                tvItemDate.text = item.createdAt
+                tvItemDate.text = item.createdAt.withDateFormat()
                 tvItemDesc.text = item.description
             }
         }

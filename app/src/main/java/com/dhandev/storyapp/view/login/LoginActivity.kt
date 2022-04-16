@@ -36,6 +36,7 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var loginViewModel: LoginViewModel
     private lateinit var binding: ActivityLoginBinding
     private lateinit var user: UserModel
+    lateinit var token1 : String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -77,6 +78,7 @@ class LoginActivity : AppCompatActivity() {
 
         loginViewModel.getUser().observe(this) { user ->
             this.user = user
+            this.token1 = user.token
         }
     }
 
@@ -122,14 +124,15 @@ class LoginActivity : AppCompatActivity() {
 
     private fun postLogin(email : String, password : String) {
         showLoading(true)
-        loginViewModel.login()
         val client = ApiConfig.getApiService().login(email, password)
         client.enqueue(object : Callback<login> {
             override fun onResponse(call: Call<login>, response: Response<login>) {
                 showLoading(false)
                 val responseBody = response.body()
                 if (response.isSuccessful && responseBody != null){
-//                    token =response.body()?.loginResult?.token
+                    token1 =response.body()?.loginResult?.token.toString()
+                    Toast.makeText(this@LoginActivity, token1, Toast.LENGTH_SHORT).show()
+                    loginViewModel.login(UserModel("","","",token1,true)) //bisa dimasukkan ke dataStore, but how to access it?
                     AlertDialog.Builder(this@LoginActivity).apply {
                         setTitle("Yeah!")
                         setMessage("Anda berhasil login. Sudah tidak sabar untuk berbagi ya?")

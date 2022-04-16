@@ -6,11 +6,13 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Matrix
 import android.net.Uri
+import android.os.Build
 import android.os.Environment
 import java.io.File
 import java.io.FileOutputStream
 import java.io.InputStream
 import java.io.OutputStream
+import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -79,4 +81,14 @@ fun uriToFile(selectedImg: Uri, context: Context): File {
     inputStream.close()
 
     return myFile
+}
+
+fun String.withDateFormat(): String {
+    val format = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+        SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX", Locale.US)
+    } else {
+        TODO("VERSION.SDK_INT < N")
+    }
+    val date = format.parse(this) as Date
+    return DateFormat.getDateInstance(DateFormat.FULL).format(date)
 }
