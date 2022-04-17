@@ -14,7 +14,7 @@ import retrofit2.Call
 import retrofit2.http.*
 
 val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
-var token = MainActivity().token1
+//var token = MainActivity().token1
 
 interface ApiService {
     @FormUrlEncoded
@@ -33,15 +33,14 @@ interface ApiService {
     ) : Call<login>
 
     @GET("stories")
-//    @Headers("Authorization: Bearer $token")
-    // belum bisa jalan karena 401 unathorized
-    //TODO:AUTHORIZATION TOKEN MASUKKAN KE AMBIL DARI DATASTORE
-    fun getStories() : Call<getAllStory>
+    fun getStories(
+        @Header("Authorization") Authorization : String,
+    ) : Call<getAllStory>
 
     @Multipart
     @POST("stories")
-//    @Headers("Authorization: Bearer ${LoginActivity.token}")
     fun uploadImage(
+        @Header("Authorization") Authorization : String,
         @Part file: MultipartBody.Part,
         @Part("description") description: RequestBody,
     ): Call<FileUploadResponse>

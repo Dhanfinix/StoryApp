@@ -1,6 +1,7 @@
 package com.dhandev.storyapp.view.add
 
 import android.Manifest
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.BitmapFactory
@@ -11,12 +12,15 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import com.dhandev.storyapp.R
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.preferencesDataStore
+import androidx.lifecycle.ViewModelProvider
+import com.dhandev.storyapp.*
 import com.dhandev.storyapp.api.ApiConfig
 import com.dhandev.storyapp.databinding.ActivityAddStoryBinding
 import com.dhandev.storyapp.model.FileUploadResponse
-import com.dhandev.storyapp.rotateBitmap
-import com.dhandev.storyapp.uriToFile
+import com.dhandev.storyapp.model.UserPreference
 import com.dhandev.storyapp.view.login.LoginActivity
 import com.dhandev.storyapp.view.main.MainActivity
 import okhttp3.MediaType.Companion.toMediaType
@@ -28,10 +32,13 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.io.File
+private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
 
 class AddStoryActivity : AppCompatActivity() {
+    private lateinit var viewModel: AddStoryViewModel
     private lateinit var binding: ActivityAddStoryBinding
     private var getFile: File? = null
+    private var token = LoginActivity().token1
 
     override fun onRequestPermissionsResult(
         requestCode: Int,
@@ -67,6 +74,11 @@ class AddStoryActivity : AppCompatActivity() {
             )
         }
 
+        viewModel = ViewModelProvider(
+            this,
+            ViewModelFactory(UserPreference.getInstance(dataStore))
+        )[AddStoryViewModel::class.java]
+
         binding.apply {
             btnKamera.setOnClickListener {
                 val intent = Intent(this@AddStoryActivity, CameraActivity::class.java)
@@ -81,7 +93,7 @@ class AddStoryActivity : AppCompatActivity() {
             }
             btnUpload.setOnClickListener {
                 if (getFile != null && binding.etDesc.text.toString() != "") {
-                    val file = getFile as File
+                    val file = reduceFileImage(getFile as File)
                     val edDescription = etDesc.text.toString()
                     val description = edDescription.toRequestBody("text/plain".toMediaType())
                     val requestImageFile = file.asRequestBody("image/jpeg".toMediaTypeOrNull())
@@ -90,30 +102,18 @@ class AddStoryActivity : AppCompatActivity() {
                         file.name,
                         requestImageFile
                     )
-
-                    val service = ApiConfig.getApiService().uploadImage(imageMultipart, description)
-                    service.enqueue(object: Callback<FileUploadResponse> {
-                        override fun onResponse(
-                            call: Call<FileUploadResponse>,
-                            response: Response<FileUploadResponse>
-                        ) {
-                            if (response.isSuccessful) {
-                                val responseBody = response.body()
-                                if (responseBody != null && !responseBody.error) {
-                                    Toast.makeText(this@AddStoryActivity, responseBody.message, Toast.LENGTH_SHORT).show()
-                                    startActivity(Intent(this@AddStoryActivity, MainActivity::class.java))
-                                    finish()
-                                }
-                            } else {
-                                Toast.makeText(this@AddStoryActivity, response.message(), Toast.LENGTH_SHORT).show()
-                            }                        }
-
-                        override fun onFailure(call: Call<FileUploadResponse>, t: Throwable) {
-                            Toast.makeText(this@AddStoryActivity, "Gagal instance Retrofit", Toast.LENGTH_SHORT).show()
+                    viewModel.getUser().observe(this@AddStoryActivity){user->
+                        if (user.isLogin) {
+                            viewModel.uploadStory(user.token, imageMultipart, description)
+                        } else {
+                            Toast.makeText(this@AddStoryActivity, "Error disini", Toast.LENGTH_SHORT).show()
                         }
-
-                    })
-
+                    }
+                    viewModel.getUploaded().observe(this@AddStoryActivity){
+                        Toast.makeText(this@AddStoryActivity, it.message, Toast.LENGTH_SHORT).show()
+                        startActivity(Intent(this@AddStoryActivity, MainActivity::class.java))
+                        finish()
+                    }
                 } else {
                     Toast.makeText(this@AddStoryActivity, "Gambar dan deskripsi tidak boleh kosong.", Toast.LENGTH_SHORT).show()
                 }

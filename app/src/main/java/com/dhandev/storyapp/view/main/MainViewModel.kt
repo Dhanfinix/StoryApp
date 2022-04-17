@@ -6,6 +6,7 @@ import com.dhandev.storyapp.api.ApiConfig
 import com.dhandev.storyapp.model.UserModel
 import com.dhandev.storyapp.model.UserPreference
 import com.dhandev.storyapp.model.getAllStory
+import com.dhandev.storyapp.view.login.LoginActivity
 import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
@@ -14,8 +15,8 @@ import retrofit2.Response
 class MainViewModel(private val pref: UserPreference) : ViewModel() {
     private val _listStory = MutableLiveData<List<getAllStory.ListStoryItem>>()
 
-    fun findStory(){
-        val client = ApiConfig.getApiService().getStories()
+    fun findStory(token : String){
+        val client = ApiConfig.getApiService().getStories("Bearer $token")
         client.enqueue(object : Callback<getAllStory> {
             override fun onResponse(
                 call: Call<getAllStory>,

@@ -24,20 +24,16 @@ class DetailActivity : AppCompatActivity() {
         binding = ActivityDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val username = intent.getStringExtra(USERNAME)
-        val image = intent.getStringExtra(IMAGE)
-        val date = intent.getStringExtra(DATE).toString()
-        val description = intent.getStringExtra(DESCRIPTION)
-
+        val story = intent.getParcelableExtra<getAllStory.ListStoryItem>("Story") as getAllStory.ListStoryItem
         binding.apply {
-            Glide.with(this@DetailActivity)
-                .load(image)
+            Glide.with(applicationContext)
+                .load(story.photoUrl)
                 .transition(DrawableTransitionOptions.withCrossFade())
                 .centerInside()
                 .into(imgItemPhoto)
-            tvItemUsername.text = "Story oleh : $username"
-            tvItemDate.text = "Dikirim pada : ${date.withDateFormat()}"
-            tvItemDesc.text = description
+            tvItemUsername.text = "Story oleh : ${story.name}"
+            tvItemDate.text = "Dikirim pada : ${story.createdAt.withDateFormat()}"
+            tvItemDesc.text = story.description
         }
     }
     companion object{

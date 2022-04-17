@@ -10,6 +10,7 @@ import android.view.MenuItem
 import android.view.WindowInsets
 import android.view.WindowManager
 import android.widget.Toast
+import androidx.core.app.ActivityOptionsCompat
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
@@ -24,6 +25,7 @@ import com.dhandev.storyapp.storyItemAdapter
 import com.dhandev.storyapp.view.add.AddStoryActivity
 import com.dhandev.storyapp.view.detail.DetailActivity
 import com.dhandev.storyapp.view.login.LoginActivity
+import java.io.File
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
 
@@ -31,7 +33,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var mainViewModel: MainViewModel
     private lateinit var binding: ActivityMainBinding
     private lateinit var adapter: storyItemAdapter
-    lateinit var token1 : String
+    var token1 : String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,17 +44,6 @@ class MainActivity : AppCompatActivity() {
         adapter = storyItemAdapter(listStory)
         adapter.notifyDataSetChanged()
 
-        adapter.setOnItemClickCallback(object : storyItemAdapter.OnItemClickCallback{
-            override fun onItemClicked(data: getAllStory.ListStoryItem) {
-                val intent = Intent(this@MainActivity, DetailActivity::class.java)
-                intent.putExtra(DetailActivity.IMAGE, data.photoUrl)
-                intent.putExtra(DetailActivity.USERNAME, data.name)
-                intent.putExtra(DetailActivity.DESCRIPTION, data.description)
-                intent.putExtra(DetailActivity.DATE, data.createdAt)
-                startActivity(intent)
-            }
-
-        })
 
         mainViewModel = ViewModelProvider(
             this,
@@ -71,21 +62,23 @@ class MainActivity : AppCompatActivity() {
 
         mainViewModel.getUser().observe(this) { user ->
             if (user.isLogin) {
-                binding.nameTextView.text = getString(R.string.greeting, user.name)
+                mainViewModel.findStory(user.token)
             } else {
                 startActivity(Intent(this, LoginActivity::class.java))
                 finish()
             }
-            this.token1 = user.token
         }
 
-        mainViewModel.findStory()
         mainViewModel.getStory().observe(this) {
             if (it != null) {
                 adapter.getListStory(it as ArrayList<getAllStory.ListStoryItem>)
             }
         }
 
+    }
+
+    private fun reduceFileImage(file: File): File {
+        return file
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

@@ -1,12 +1,17 @@
 package com.dhandev.storyapp
 
+import android.app.Activity
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.app.ActivityOptionsCompat
+import androidx.core.util.Pair
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.dhandev.storyapp.databinding.StoryItemBinding
 import com.dhandev.storyapp.model.getAllStory
+import com.dhandev.storyapp.view.detail.DetailActivity
 
 class storyItemAdapter(private val listStoryItem: ArrayList<getAllStory.ListStoryItem>) : RecyclerView.Adapter<storyItemAdapter.StoryViewHolder>(){
 
@@ -18,9 +23,6 @@ class storyItemAdapter(private val listStoryItem: ArrayList<getAllStory.ListStor
         notifyDataSetChanged()
     }
 
-    fun setOnItemClickCallback (onItemClickCallback: OnItemClickCallback){
-        this.onItemClickCallback = onItemClickCallback
-    }
 
     inner class StoryViewHolder(val binding: StoryItemBinding) : RecyclerView.ViewHolder(binding.root) {
         var context = itemView.context
@@ -32,11 +34,24 @@ class storyItemAdapter(private val listStoryItem: ArrayList<getAllStory.ListStor
                 Glide.with(itemView)
                     .load(item.photoUrl)
                     .transition(DrawableTransitionOptions.withCrossFade())
-                    .centerInside()
+                    .centerCrop()
                     .into(imgItemPhoto)
                 tvItemUsername.text = item.name
                 tvItemDate.text = item.createdAt.withDateFormat()
                 tvItemDesc.text = item.description
+                itemView.setOnClickListener {
+                    val intent = Intent(context, DetailActivity::class.java)
+                    intent.putExtra("Story", item)
+                    val optionsCompat : ActivityOptionsCompat =
+                        ActivityOptionsCompat.makeSceneTransitionAnimation(
+                            itemView.context as Activity,
+                            Pair(imgItemPhoto, "gambar"),
+                            Pair(tvItemUsername, "username"),
+                            Pair(tvItemDesc, "desc"),
+                            Pair(tvItemDate, "date")
+                        )
+                    context.startActivity(intent, optionsCompat.toBundle())
+                }
             }
         }
 

@@ -36,7 +36,7 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var loginViewModel: LoginViewModel
     private lateinit var binding: ActivityLoginBinding
     private lateinit var user: UserModel
-    lateinit var token1 : String
+    var token1 : String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -93,27 +93,8 @@ class LoginActivity : AppCompatActivity() {
                 password.isEmpty() -> {
                     binding.passwordEditTextLayout.error = "Masukkan password"
                 }
-//                email != user.email -> {
-//                    binding.emailEditTextLayout.error = "Email tidak sesuai"
-//                }
-//                password != user.password -> {
-//                    binding.passwordEditTextLayout.error = "Password tidak sesuai"
-//                }
                 else -> {
                     postLogin(email, password)
-//                    loginViewModel.login()
-//                    AlertDialog.Builder(this).apply {
-//                        setTitle("Yeah!")
-//                        setMessage("Anda berhasil login. Sudah tidak sabar untuk berbagi ya?")
-//                        setPositiveButton("Lanjut") { _, _ ->
-//                            val intent = Intent(context, MainActivity::class.java)
-//                            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-//                            startActivity(intent)
-//                            finish()
-//                        }
-//                        create()
-//                        show()
-//                    }
                 }
             }
         }
@@ -146,6 +127,7 @@ class LoginActivity : AppCompatActivity() {
                         show()
                     }
                 } else {
+                    Toast.makeText(this@LoginActivity, "Email atau Password salah", Toast.LENGTH_SHORT).show()
                     Log.e(TAG, "onFailure: ${response.message()}")
                 }
             }
