@@ -33,7 +33,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var mainViewModel: MainViewModel
     private lateinit var binding: ActivityMainBinding
     private lateinit var adapter: storyItemAdapter
-    var token1 : String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -75,10 +74,6 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-    }
-
-    private fun reduceFileImage(file: File): File {
-        return file
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

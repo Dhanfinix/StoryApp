@@ -3,6 +3,7 @@ package com.dhandev.storyapp.view.detail
 import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.MenuItem
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
@@ -23,7 +24,8 @@ class DetailActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.title = "Detail Story"
         val story = intent.getParcelableExtra<getAllStory.ListStoryItem>("Story") as getAllStory.ListStoryItem
         binding.apply {
             Glide.with(applicationContext)
@@ -36,11 +38,10 @@ class DetailActivity : AppCompatActivity() {
             tvItemDesc.text = story.description
         }
     }
-    companion object{
-        const val USERNAME = "USERNAME"
-        const val IMAGE = "IMAGE"
-        const val DATE = "DATE"
-        const val DESCRIPTION = "DESC"
-
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId){
+            android.R.id.home -> finish()
+        }
+        return super.onOptionsItemSelected(item)
     }
 }

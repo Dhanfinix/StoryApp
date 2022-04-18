@@ -13,7 +13,6 @@ class ApiConfig {
                 HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
             val client = OkHttpClient.Builder()
                 .addInterceptor(loggingInterceptor)
-                //TODO : Auth is closer to be done. How to accessToken from LoginActivity.token1?
                 .build()
             val retrofit = Retrofit.Builder()
                 .baseUrl("https://story-api.dicoding.dev/v1/#/")

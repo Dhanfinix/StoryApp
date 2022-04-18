@@ -78,7 +78,6 @@ class LoginActivity : AppCompatActivity() {
 
         loginViewModel.getUser().observe(this) { user ->
             this.user = user
-            this.token1 = user.token
         }
     }
 
@@ -112,8 +111,7 @@ class LoginActivity : AppCompatActivity() {
                 val responseBody = response.body()
                 if (response.isSuccessful && responseBody != null){
                     token1 =response.body()?.loginResult?.token.toString()
-                    Toast.makeText(this@LoginActivity, token1, Toast.LENGTH_SHORT).show()
-                    loginViewModel.login(UserModel("","","",token1,true)) //bisa dimasukkan ke dataStore, but how to access it?
+                    loginViewModel.login(UserModel("","","",token1,true))
                     AlertDialog.Builder(this@LoginActivity).apply {
                         setTitle("Yeah!")
                         setMessage("Anda berhasil login. Sudah tidak sabar untuk berbagi ya?")
@@ -150,6 +148,5 @@ class LoginActivity : AppCompatActivity() {
 
     companion object {
         private const val TAG = "LoginActivity"
-        const val token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJ1c2VyLVN1VTlLR0duZlA3ZHg5b3EiLCJpYXQiOjE2NDk4NjEzMTV9.2aCMRadWBwvDv8CNIWgnQKQ7EvLpFgtay4Umce2mREs"
     }
 }

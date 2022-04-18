@@ -8,6 +8,7 @@ import android.graphics.BitmapFactory
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.MenuItem
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
@@ -38,7 +39,6 @@ class AddStoryActivity : AppCompatActivity() {
     private lateinit var viewModel: AddStoryViewModel
     private lateinit var binding: ActivityAddStoryBinding
     private var getFile: File? = null
-    private var token = LoginActivity().token1
 
     override fun onRequestPermissionsResult(
         requestCode: Int,
@@ -73,6 +73,9 @@ class AddStoryActivity : AppCompatActivity() {
                 REQUEST_CODE_PERMISSIONS
             )
         }
+
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.title = "Add New Story"
 
         viewModel = ViewModelProvider(
             this,
@@ -149,6 +152,12 @@ class AddStoryActivity : AppCompatActivity() {
         }
     }
 
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId){
+            android.R.id.home -> finish()
+        }
+        return super.onOptionsItemSelected(item)
+    }
 
     companion object {
         const val CAMERA_X_RESULT = 200
