@@ -87,10 +87,10 @@ class LoginActivity : AppCompatActivity() {
             val password = binding.passwordEditTextLayout.text.toString()
             when {
                 email.isEmpty() -> {
-                    binding.emailEditTextLayout.error = "Masukkan email"
+                    binding.emailEditTextLayout.error = resources.getString(R.string.masukkan_email)
                 }
                 password.isEmpty() -> {
-                    binding.passwordEditTextLayout.error = "Masukkan password"
+                    binding.passwordEditTextLayout.error = resources.getString(R.string.masukkan_pass)
                 }
                 else -> {
                     postLogin(email, password)

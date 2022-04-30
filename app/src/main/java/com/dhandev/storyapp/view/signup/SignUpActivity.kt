@@ -31,7 +31,6 @@ private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(na
 
 class SignUpActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySignUpBinding
-    private lateinit var signupViewModel: SignUpViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,7 +38,6 @@ class SignUpActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         setupView()
-        setupViewModel()
         setupAction()
         playAnimation()
     }
@@ -76,13 +74,6 @@ class SignUpActivity : AppCompatActivity() {
             )
         }
         supportActionBar?.hide()
-    }
-
-    private fun setupViewModel() {
-        signupViewModel = ViewModelProvider(
-            this,
-            ViewModelFactory(UserPreference.getInstance(dataStore))
-        )[SignUpViewModel::class.java]
     }
 
     private fun setupAction() {
@@ -140,11 +131,7 @@ class SignUpActivity : AppCompatActivity() {
     }
 
     private fun showLoading(isLoading: Boolean) {
-        if (isLoading) {
-            binding.progressBar.visibility = View.VISIBLE
-        } else {
-            binding.progressBar.visibility = View.GONE
-        }
+        binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
     }
 
     companion object {

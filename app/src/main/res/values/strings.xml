@@ -24,4 +24,8 @@
     <string name="kamera">Kamera</string>
     <string name="story_picture">Story Picture</string>
     <string name="story_pengguna">Story pengguna</string>
+    <string name="detail_storyBy">Story oleh : %1$s</string>
+    <string name="detail_createdAt">Dikirim pada : %1$s</string>
+    <string name="masukkan_email">Masukkan email</string>
+    <string name="masukkan_pass">Masukkan password</string>
 </resources>

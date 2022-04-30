@@ -31,8 +31,8 @@ class DetailActivity : AppCompatActivity() {
                 .transition(DrawableTransitionOptions.withCrossFade())
                 .centerInside()
                 .into(imgItemPhoto)
-            tvItemUsername.text = "Story oleh : ${story.name}"
-            tvItemDate.text = "Dikirim pada : ${story.createdAt.withDateFormat()}"
+            tvItemUsername.text = resources.getString(R.string.detail_storyBy, story.name)
+            tvItemDate.text = resources.getString(R.string.detail_createdAt, story.createdAt.withDateFormat())
             tvItemDesc.text = story.description
         }
     }
