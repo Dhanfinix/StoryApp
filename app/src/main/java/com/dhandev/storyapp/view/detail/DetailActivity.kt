@@ -15,8 +15,6 @@ import com.dhandev.storyapp.model.getAllStory
 import com.dhandev.storyapp.storyItemAdapter
 import com.dhandev.storyapp.withDateFormat
 
-private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
-
 class DetailActivity : AppCompatActivity() {
     private lateinit var binding : ActivityDetailBinding
 
@@ -25,7 +23,7 @@ class DetailActivity : AppCompatActivity() {
         binding = ActivityDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.title = "Detail Story"
+        title = "Detail Story"
         val story = intent.getParcelableExtra<getAllStory.ListStoryItem>("Story") as getAllStory.ListStoryItem
         binding.apply {
             Glide.with(applicationContext)

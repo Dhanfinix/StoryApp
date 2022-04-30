@@ -41,7 +41,7 @@ class AddStoryViewModel(private val pref: UserPreference) : ViewModel() {
             }
 
             override fun onFailure(call: Call<FileUploadResponse>, t: Throwable) {
-                Log.d("Failuer", t.message.toString())
+                Log.d("Failure", t.message.toString())
             }
 
         })
