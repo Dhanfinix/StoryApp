@@ -28,4 +28,6 @@
     <string name="detail_createdAt">Dikirim pada : %1$s</string>
     <string name="masukkan_email">Masukkan email</string>
     <string name="masukkan_pass">Masukkan password</string>
+    <string name="title_activity_maps">MapsActivity</string>
+    <string name="maps">Maps</string>
 </resources>

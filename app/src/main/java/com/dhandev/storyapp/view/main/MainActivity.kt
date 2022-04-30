@@ -22,6 +22,7 @@ import com.dhandev.storyapp.databinding.ActivityMainBinding
 import com.dhandev.storyapp.model.UserPreference
 import com.dhandev.storyapp.model.getAllStory
 import com.dhandev.storyapp.storyItemAdapter
+import com.dhandev.storyapp.view.MapsActivity
 import com.dhandev.storyapp.view.add.AddStoryActivity
 import com.dhandev.storyapp.view.detail.DetailActivity
 import com.dhandev.storyapp.view.login.LoginActivity
@@ -84,8 +85,12 @@ class MainActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.menu1 -> {
+            R.id.btnKeluar -> {
                 mainViewModel.logout()
+                return true
+            }
+            R.id.btnMaps -> {
+                startActivity(Intent(this, MapsActivity::class.java))
                 return true
             }
             else -> return true
